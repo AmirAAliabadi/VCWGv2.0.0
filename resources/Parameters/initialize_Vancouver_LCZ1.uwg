@@ -1,0 +1,359 @@
+# =================================================
+# Sample VCWG simulation initialization parameters
+# Mohsen Moradi and Amir A. Aliabadi
+# Atmospheric Innovations Research (AIR) Laboratory, University of Guelph, Guelph, Canada
+# Last update: May 2021
+# =================================================
+
+# =================================================
+# SIMULATION CONTROL,
+# =================================================
+# Simulation parameters,
+Month,7,           # starting month 6
+Day,1,             # starting day (1-31) 16
+nDay,31,           # number of days to run simulation 31
+dtSim,300,         # simulation time step [s]
+dtWeather,3600,    # weather time step [s]
+nDay_spinup,1,     # Number of days accounted for spin-up
+nightStart,18,     # Sunset time in local standard time
+nightEnd,8,        # Sunrise time in local standard time
+Elevation,245,     # Elevation above sea level [m]
+
+# =================================================
+# Control switches
+# =================================================
+OPTION_RAY,1,         # 1: read the view factors from an existing file, 0: calculate view factors by ray tracing
+Rural_Model_name,2,   # 1: MOST, 2: Using an external forcing file with variables specified at the top of the domain
+EB_RuralModel_name,2, # 1: Louis, 2: Penman_Monteith
+Tdeep_ctrl,1,         # 1: Using force restore method, 2: Using climate data (from epw file). If reliable estimate of deep soil temperature is not available using force restore method is recommended
+
+# =================================================
+# Urban Configuration
+# =================================================
+nz,90,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,30,               # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+dz,1,                  # vertical resolution [m]
+Width_canyon,10,       # distance between buildings at street level in the x and y direction must be equal [m]
+Width_roof,12,         # building dimension [m]
+theta_canyon,0.0,      # Canyon direction from geographical north, in the counter trigonometric direction (from -90 to 90 degrees)
+Height_canyon,30,      # Average building height [m]
+fveg_R,0,              # Vegetated roof fraction (between 0 and 1)
+fimp_R,1.0,            # Impervious roof fraction (between 0 and 1)
+fveg_G,0.1,            # Vegetated ground fraction
+fbare_G,0.0,           # Bare ground fraction
+fimp_G,0.9,            # Impervious ground fraction
+Per_runoff_R,1,        # Percentage of roof excess water that leaves the system as runoff, needs to be between 0-1 [-]
+Per_runoff_G,0.5,      # Percentage of ground excess water that leaves the system as runoff, needs to be between 0-1 [-]
+
+# =================================================
+# Radiative Properties
+# =================================================
+aveg_R,0.27,         # Roof vegetation surface albedo (-)
+aimp_R,0.13,         # Roof impervious albedo (-)
+eveg_R,0.95,         # Roof vegetation surface emissivity (-)
+eimp_R,0.91,         # Roof impervious emissivity (-)
+aveg_G,0.27,         # Ground vegetation surface albedo (-)
+abare_G,0.2,         # Ground vegetation surface albedo (-)
+aimp_G,0.14,         # Ground impervious albedo (-)
+eveg_G,0.95,         # Ground vegetation surface emissivity (-)
+ebare_G,0.97,        # Ground vegetation surface emissivity (-)
+eimp_G,0.95,         # Ground impervious emissivity (-)
+albedo_W,0.25,       # Wall surface albedo (-)
+emissivity_W,0.9,    # Wall emissivity (-)
+albedo_T,0.27,       # Tree albedo (-)
+emissivity_T,0.95,   # Tree emissivity (-)
+e_rural,0.95,        # Rural emissivity (-)
+a_rural,0.2,         # Rural albedo (-)
+aveg_rural,0.20,     # Vegetation (trees) albedo (-)
+MCSampleSize,200,    # Sample size used in Monte Carlo algorithm to calculate view factors. Note: This parameter is only used when OPTION_RAY = 0
+NRays,100,           # Number of rays used in Monte Carlo algorithm to calculate view factors. Note: This parameter is only used when OPTION_RAY = 0
+
+# =================================================
+# Thermal Properties (Used by surface energy balance models. The building energy model does not use these variables)
+# =================================================
+lan_dry_imp_R,0.94,  # Thermal conductivity dry solid [W m^-1 K^-1]
+cv_s_imp_R,1400000,  # Volumetric heat capacity solid [J m^-3 K^-1]
+lan_dry_imp_G,1.2,   # Thermal conductivity dry solid impervious ground [W m^-1 K^-1]
+cv_s_imp_G,1800000,  # Volumetric heat capacity solid impervious ground [J m^-3 K^-1]
+lan_dry_veg_G,6.84,  # Thermal conductivity dry solid for vegetated ground [W m^-1 K^-1]  (Note: it is just considered as initial value, as it will be calculated)
+cv_s_veg_G,3013700,  # Volumetric heat capacity solid vegetated ground [J m^-3 K^-1] (Note: it is just considered as initial value, as it will be calculated)
+lan_dry_bare_G,6.84, # Thermal conductivity dry solid for bare ground [W m^-1 K^-1] (Note: it is just considered as initial value, as it will be calculated)
+cv_s_bare_G,2213700, # Volumetric heat capacity solid bare ground [J m^-3 K^-1] (Note: it is just considered as initial value, as it will be calculated)
+lan_dry_imp_W,0.94,  # Thermal conductivity dry solid [W m^-1 K^-1]
+cv_s_imp_W,1400000,  # Volumetric heat capacity solid [J m^-3 K^-1]
+Cthermal_leaf,640,   # Heat capacity per single leaf area [J m^-2 K^-1]  based on Kitaya et al. 2003, Ryu et al. 2016
+lan_dry_imp_W_layers,# Thermal conductivity dry solid of wall layers [W m^-1 K^-1]
+0.6918,1.311,1.311,1.311,1.311,0.16,
+cv_s_imp_W_layers,   # Volumetric heat capacity solid of wall layers [J m^-3 K^-1]
+1555146,1874432,1874432,1874432,1874432,651467,
+lan_rural,1,         # Thermal conductivity of rural surface [W m^-1 K^-1]
+cv_s_rural,1400000,  # Volumetric heat capacity rural surface [J m^-3 K^-1]
+
+# =================================================
+# Surface Vegetation Parameters
+# =================================================
+LAI_R,2.5,            # Leaf area index for the roof vegetation [-]
+SAI_R,0.001,          # Stem area index for the roof vegetation [-]
+hc_R,0.15,            # canopy height roof vegetation	[m]
+d_leaf_R,0.8,         # Leaf dimension of roof vegetation [cm]
+CASE_ROOT_R,1,        # Type of Root Profile
+ZR95_R,70,            # Root depth 95 percentile [mm]
+ZR50_R,NaN,           # Root depth 50 percentile [mm]
+ZRmax_R,NaN,          # Maximum Root depth [mm]
+Rrootl_R,3800,        # Root length index [m root m^-2 PFT]
+PsiL50_R,-4.0,        # Water Potential at 50% loss conductivity [MPa]
+PsiX50_R,-4.50,       # Water potential at 50 of xylem hydraulic conductivity and limit for water extraction from soil [MPa]
+FI_R,0.081,           # Intrinsec quantum Efficiency [umolCO2 umolPhotons^-1]
+Do_R,1000,            # Empirical coefficient for the role of vapor pressure in the biochemical model of photosynthesis [Pa]
+a1_R,6,               # Empirical parameter connecting stomatal aperture and net assimilaton [-]
+go_R,0.01,            # minimal Stomatal Conductance [mol s^-1 m^-2]
+CT_R,3,               # --> 'CT' == 3  'CT' ==  4 Photosyntesis Typology for Plants, Photosynthetic pathway C3 or C4
+DSE_R,0.656,          # Activation Energy - Plant Dependent, Activation Energy in Photosynthesis for Rubisco Capacity [kJ mol^-1]
+Ha_R,55,              # entropy factor - Plant Dependent, Activation energy. [kJ mol^-1 K^-1]
+gmes_R,inf,           # Mesophyll conductance, not used [mol CO2 s^-1 m^-2]
+rjv_R,2.4,            # Scaling factor between Jmax and Vmax [mol Eq mol^-1 CO2]
+Kopt_R,0.5,           # optical depth of direct beam perunit plant area [-]
+Knit_R,0.15,          # Canopy nitrogen decay coefficient [-]
+Vmax_R,68,            # [mol CO2 m^-2 s^-1] Maximum Rubisco capacity at 25°C leaf level
+mSl_R,0.0,            #
+e_rel_R,1,            # Relative Efficiency of the photosynthesis apparatus due to Age/Day-length [-]
+e_relN_R,1,           # Relative efficiency of the photosynthesis apparatus due to N limitations [-]
+Psi_sto_00_R,-0.5,    # Water Potential at PLCs loss conductivity [MPa]
+Psi_sto_50_R,-3.0,    # Water Potential at 50% loss conductivity [MPa]
+Sl_R,0.035,           # specific leaf area of  biomass [m^2 gC^-1]
+LAI_G,3,              # Leaf area index for the ground vegetation [m^2 m^-2]
+SAI_G,0.001,          # Stem area index for the ground vegetation [-]
+hc_G,0.15,            # canopy height ground vegetation	[m]
+d_leaf_G,0.8,         # Leaf dimension of ground vegetation [cm]
+CASE_ROOT_G,1,        # Type of Root Profile
+ZR95_G,250,           # Root depth 95 percentile [mm]
+ZR50_G,NaN,           # Root depth 50 percentile [mm]
+ZRmax_G,NaN,          # Maximum Root depth [mm]
+Rrootl_G,3800,        # Root length index [m root m^-2 PFT]
+PsiL50_G,-2.5,        # Water Potential at 50% loss conductivity [MPa]
+PsiX50_G,-4.50,       # Water potential at 50 of xylem hydraulic conductivity and limit for water extraction from soil [MPa]
+FI_G,0.081,           # Intrinsec quantum Efficiency [umolCO2 umolPhotons^-1]
+Do_G,1000,            # Empirical coefficient for the role of vapor pressure in the biochemical model of photosynthesis [Pa]
+a1_G,6,               # Empirical parameter connecting stomatal aperture and net assimilation [-]
+go_G,0.01,            # minimal Stomatal Conductance [mol s^-1 m^-2]
+CT_G,3,               # --> 'CT' == 3  'CT' ==  4 Photosyntesis Typology for Plants, Photosynthetic pathway C3 or C4
+DSE_G,0.656,          # Activation Energy - Plant Dependent, Activation Energy in Photosynthesis for Rubisco Capacity [kJ mol^-1]
+Ha_G,55,              # entropy factor - Plant Dependent, Activation energy. [kJ mol^-1 K^-1]
+gmes_G,inf,           # Mesophyll conductance, not used [mol CO2 s^-1 m^-2]
+rjv_G,2.4,            # Scaling factor between Jmax and Vmax [mol Eq mol^-1 CO2]
+Kopt_G,0.5,           # optical depth of direct beam per unit plant area [-]
+Knit_G,0.15,          # Canopy nitrogen decay coefficient [-]
+Vmax_G,68,            # [mol CO2 m^-2 s^-1] Maximum Rubisco capacity at 25°C leaf level
+mSl_G,0.0,            #
+e_rel_G,1,            # Relative Efficiency of the photosynthesis apparatus due to Age/Day-length [-]
+e_relN_G,1,           # Relative efficiency of the photosynthesis apparatus due to N limitations [-]
+Psi_sto_00_G,-0.5,    # Water Potential at PLCs loss conductivity [MPa]
+Psi_sto_50_G,-3.0,    # Water Potential at 50% loss conductivity [MPa]
+Sl_G,0.035,           # specific leaf area of  biomass [m^2 gC^-1]
+
+# =================================================
+# Tree Vegetation Parameters
+# =================================================
+Radius_tree,1.0,       # Radius of tree crown [m]
+distance_tree,2.0,     # Tree-to-wall distance [m]
+LAD,                   # height measured from the ground [m], leaf area density profile per unit volume of the canyon [m^2 m^-3]
+0,1,2,3,4,5,6,7,8,
+0,0.002,0.02,0.03,0.046,0.04,0.036,0.02,0.01,
+trees,1,               # 1 for trees and 0 for no trees
+ftree,1,               # 1 for trees and 0 for no trees
+omega,1,               # Clumping factor
+omega_drag,1,          # Clumping factor for calculation of drag coefficient
+LAI_T,1.0,             # Leaf area index for the Tree vegetation per projected unit area of tree [m^2 m^-2]
+SAI_T,0.2,             # Stem area index for the Tree vegetation [m^2 m^-2]
+d_leaf_T,4,            # Leaf dimension of Tree vegetation [cm]
+CASE_ROOT_T,1,         # Type of Root Profile
+ZR95_T,1000,           # Root depth 95 percentile [mm]
+ZR50_T,NaN,            # Root depth 50 percentile [mm]
+ZRmax_T,NaN,           # Maximum Root depth [mm]
+Rrootl_T,4000,         # Root length index [m root m^-2 PFT]
+PsiL50_T,-3.0,         # Water Potential at 50% loss conductivity [MPa]
+PsiX50_T,-4.5,         # Water potential at 50 of xylem hydraulic conductivity and limit for water extraction from soil [MPa]
+FI_T,0.081,            # Intrinsic quantum Efficiency [umolCO2 umolPhotons^-1]
+Do_T,1000,             # Empirical coefficient for the role of vapor pressure in the biochemical model of photosynthesis [Pa]
+a1_T,9,                # Empirical parameter connecting stomatal aperture and net assimilation []
+go_T,0.01,             # minimal Stomatal Conductance [mol s^-1 m^-2]
+CT_T,3,                # --> 'CT' == 3  'CT' ==  4 Photosyntesis Typology for Plants, Photosynthetic pathway C3 or C4
+DSE_T,0.649,           # Activation Energy - Plant Dependent, Activation Energy in Photosynthesis for Rubisco Capacity [kJ mol^-1]
+Ha_T,76,               # entropy factor - Plant Dependent, Activation energy. [kJ mol^-1 K^-1]
+gmes_T,inf,            # Mesophyll conductance, not used [mol CO2 s^-1 m^-2]
+rjv_T,2.4,             # Scaling factor between Jmax and Vmax [mol Eq mol^-1 CO2]
+Kopt_T,0.5,            # optical depth of direct beam perunit plant area [-]
+Knit_T,0.35,           # Canopy nitrogen decay coefficient [-]
+Vmax_T,66,             # [mol CO2 m^-2 s^-1] Maximum Rubisco capacity at 25°C leaf level
+mSl_T,0.0,             #
+e_rel_T,1,             # Relative Efficiency of the photosynthesis apparatus due to Age/Day-length [-]
+e_relN_T,1,            # Relative efficiency of the photosynthesis apparatus due to N limitations [-]
+Psi_sto_00_T,-0.5,     # Water Potential at PLCs loss conductivity [MPa]
+Psi_sto_50_T,-2.2,     # Water Potential at 50% loss conductivity [MPa]
+Sl_T,0.024,            # specific leaf area of  biomass [m^2 gC^-1]
+# Tree root distribution: 1 = Tree roots can access all water in the soil (imp, bare, veg) equally 2 =  If the tree
+# crown is smaller than the combined vegetated and bare fraction, then the trees only transpire from these fractions.
+# Otherwise, they also transpire from the impervious ground fraction.
+SPARTREE,2,
+
+# =================================================
+# Soil layer discretization
+# =================================================
+Zs_R,                  # soil layer discretization [mm]
+0,58.19,116.38,
+Zs_G,                  # soil layer discretization [mm]
+0,2.5,7.5,17.5,37.5,57.5,87.5,137.5,217.5,337.5,537.5,737.5,1037.5,1537.5,
+Zs_W,                  # Wall layer discretization [mm]
+0,25.4,76.2,127,177.8,228.6,241.3,
+Zs_rural,              # Rural layer discretization [mm]
+0,10,20,50,100,150,200,250,300,350,400,450,500,550,
+
+# =================================================
+# Interception and Soil Parameters
+# =================================================
+Pcla_R,0.20,            # Fraction of clay in the soil [-]
+Psan_R,0.40,            # Fraction of sand in the soil [-]
+Porg_R,0.025,           # Fraction of organic material in the soil [-]
+In_max_imp_R,0.25,      # Maxiumum interception capacity of roof impervious area [mm]
+In_max_ground_R,10,     # Maxiumum interception capacity of ground under roof vegetation [mm]
+Sp_In_R,0.2,            # specific water retained by a vegetated surface [mm m^2 VEG area m^-2 plant area]
+Kimp_R,0,               # Hydraulic conductivity of impervious area [mm h^-1]
+Kfc_R,0.2,              # Conductivity at field capacity [mm h^-1]
+Phy_R,10000,            # Suction at the residual/hygroscopic water content [kPa]
+Kbot_R,NaN,             # Conductivity at the bedrock layer [mm h^-1]
+SPAR_R,2,               # SOIL PARAMETER TYPE 1-VanGenuchten 2-Saxton-Rawls. Do not use 1-VanGenuchten at the moment as very high soil water potential when dry
+Pcla_G,0.20,            # Fraction of clay in the soil [-]
+Psan_G,0.40,            # Fraction of sand in the soil [-]
+Porg_G,0.025,           # Fraction of organic material in the soil [-]
+In_max_imp_G,0.5,       # Maxiumum interception capacity of impervious ground area [mm]
+In_max_underveg_G,10,   # Maxiumum interception capacity of vegetated ground area [mm]
+In_max_bare_G,10,       # Maxiumum interception capacity of bare ground area [mm]
+Sp_In_G,0.2,            # specific water retained by a vegetated surface [mm m^2 VEG area m^-2 plant area]
+Kimp_G,0.001,           # Hydraulic conductivity of impervious area [mm h^-1]
+Kfc_G,0.2,              # Conductivity at field capacity [mm h^-1]
+Phy_G,10000,            # Suction at the residual/hygroscopic water content [kPa]
+Kbot_G,NaN,             # Conductivity at the bedrock layer [mm h^-1]
+SPAR_G,2,               # SOIL PARAMETER TYPE 1-VanGenuchten 2-Saxton-Rawls. Do not use 1-VanGenuchten at the moment as very high soil water potential when dry
+Sp_In_T,0.2,            # specific water retained by the tree [mm m^2 VEG area m^-2 plant area]
+
+# =================================================
+# Person for MRT calculation
+# =================================================
+# PersonWidth and PersonHeight are not used at the moment
+PositionPz,1.1,         # height of centre of person, usually choose 1.1 [m]
+PersonWidth,0.1,        # horizontal radius of ellipse describing person (=hip width / 2) [m]
+PersonHeight,0.11,      # Vertical radius of ellipse describing person (= height / 2)
+# Automatic wind speed calculation at user speficied height
+HeightWind,1.1,         # height for wind speed to calculate OTC [m]
+
+# =================================================
+# Atmospheric composition
+# =================================================
+Catm_CO2,400,           # Atmospheric CO2 mixing ratio 2017 [ppm]=[umolCO2 mol^-1]
+Catm_O2,210000,         # Atmospheric O2 mixing ratio [ppm]=[umolO2 mol^-1]
+
+# =================================================
+# Column Model
+# =================================================
+Ri_b_cr,0.1,           # Critical bulk Richardson number in the urban area used to determine thermal stability
+z0_roof,0.02,          # Roof roughness [m] 
+z0_road,0.02,          # Road roughness [m] 
+cdmin,0.01,            # Minimum diffusion coefficient
+prandtl,0.8,           # Turbulent Prandtl number
+schmidt,1,             # Turbulent Schmidt number
+HVAC_atm_frac,1,       # Fraction of sensible waste heat from building released into the atmosphere
+HVAC_street_frac,0,    # Fraction of Sensible waste heat from building released into the atmosphere at street level
+WindMin_Urban,0.01,    # min wind speed in the urban area [m s^-1]
+
+# =================================================
+# Building Energy Model
+# =================================================
+glzR,0.1,              # Glazing Ratio (0 - 1)
+autosize,0,            # autosize HVAC (1 for yes; 0 for no)
+sensOcc,100,           # Sensible heat per occupant [W]
+LatFOcc,0.3,           # Latent heat fraction from occupant (normally 0.3)
+RadFOcc,0.2,           # Radiant heat fraction from occupant (normally 0.2)
+RadFEquip,0.5,         # Radiant heat fraction from equipment (normally 0.5)
+RadFLight,0.7,         # Radiant heat fraction from light (normally 0.7)
+hvac,0,                # HVAC TYPE; 0 = Fully Conditioned (21C-24C); 1 = Mixed Mode Natural Ventilation (19C-29C + windows open >22C); 2 = Unconditioned (windows open >22C)
+h_floor,3,             # Floor height [m] 
+
+# Climate Zone (Eg. City)   Zone number
+# 1A(Miami)                     1
+# 2A(Houston)                   2
+# 2B(Phoenix)                   3
+# 3A(Atlanta)                   4
+# 3B-CA(Los Angeles)            5
+# 3B(Las Vegas)                 6
+# 3C(San Francisco)             7
+# 4A(Baltimore)                 8
+# 4B(Albuquerque)               9
+# 4C(Seattle)                   10
+# 5A(Chicago)                   11
+# 5B(Boulder)                   12
+# 6A(Minneapolis)               13
+# 6B(Helena)                    14
+# 7(Duluth)                     15
+# 8(Fairbanks)                  16
+# 4C (Basel)                    17
+
+zone,10,
+
+# Building type (pre-80's build, 80's-present build, new) (0 or 1)
+bld,
+0,0,0,    # FullServiceRestaurant
+0,0,0,    # Hospital
+0,0,0,    # LargeHotel
+0,0,0,    # LargeOffice
+0,0,0,    # MediumOffice
+0,1,0,    # MidRiseApartment
+0,0,0,    # OutPatient
+0,0,0,    # PrimarySchool
+0,0,0,    # QuickServiceRestaurant
+0,0,0,    # SecondarySchool
+0,0,0,    # SmallHotel
+0,0,0,    # SmallOffice
+0,0,0,    # Stand-aloneRetail
+0,0,0,    # StripMall
+0,0,0,    # SuperMarket
+0,0,0,    # Warehouse
+
+# =================================================
+# Urban Canopy Model,
+# =================================================
+charLength,8,     # dimension of a square that encompasses the whole neighborhood [aka. characteristic length] [km]
+sensAnth,0,       # non-building sensible heat at street level [aka. heat from cars, pedestrians, street cooking, etc. ] [W m^-2]
+latAnth,0,        # non-building latent heat [W m^-2] (currently not used)
+# Traffic schedule [1 to 24 hour], Weekday, Saturday, Sunday
+SchTraffic,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+
+# =================================================
+# Rural Model
+# =================================================
+L_Pos_min,0,            # Minimum positive Obukhov length [m] used by the rural model
+L_Pos_max,2000000,      # Maximum positive Obukhov length [m] used by the rural model
+L_Neg_max,0,            # Maximum negative Obukhov length [m] used by the rural model
+L_Neg_min,-1000000,     # Minimum negative Obukhov length [m] used by the rural model
+ZL_Pos_cutoff,0,        # Cutoff z/L for neutral to stable condition used by the rural model
+ZL_Neg_cutoff,0,        # Cufoff z/L for neutral to unstable condition used by the rural model
+u_star_min_MOST,0.11,   # Minimum friction velocity used by the rural model typically in the order of 0.1*WindMin [m s^-1]
+z0overh_MOST,0.1,       # Aerodynamic roughness length over obstacle height for MOST
+zToverz0_MOST,0.5,      # Thermodynamic roughness length over Aerodynamic roughness length for MOST
+dispoverh_MOST,0.5,     # Displacement height over obstacle height for MOST
+WindMin_MOST,0.2,       # Minimum wind for MOST [m s^-1]
+h_obs,2,                # rural average obstacle height [m]
+h_temp,2,               # temperature height [m]
+h_wind,10,              # wind height [m]
+disp_h_h_rural,0.5,     # The ratio of displacement height to the obstacle height for rural surface energy balance
+BowenRatio_rural,0.9,   # Bowen ratio in the rural area
+MinWind_rural,0.5,      # minimum wind for surface heat flux calculation for rural surface energy balance
+vegStart,4,             # The month in which vegetation starts to evapotranspire (leaves are out)
+vegEnd,10,              # The month in which vegetation stops evapotranspiring (leaves fall)
+rurVegCover,0.9,        # Fraction of the rural ground covered by vegetation
+cdmin_rural,0.01,       # Minimum diffusion coefficient in the rural area
+prandtl_rural,0.5,      # Turbulent Prandtl number in the rural area
+schmidt_rural,0.4,      # Turbulent Schmidt number in the rural area
+z0_Louis,0.02,          # Aerodynamic roughness length Louis 1979 [m]
