@@ -315,7 +315,7 @@ class Building(object):
             -(wallArea*zac_in_wall*(T_wall-T_heat) +               # wall load per unit building footprint area [W m^-2]
             massArea*zac_in_mass*(T_mass-T_heat) +                 # other surfaces load per unit building footprint area [W m^-2]
             winArea*self.uValue*(T_can-T_heat) +                   # window load due to temperature difference per unit building footprint area [W m^-2]
-            zac_in_ceil*(T_ceil-T_heat) +                          # ceiling load per unit building footprint area [W m^-2]
+            ceilingArea*zac_in_ceil*(T_ceil-T_heat) +              # ceiling load per unit building footprint area [W m^-2]
             self.intHeat +                                         # internal load per unit building footprint area [W m^-2]
             volInfil*dens*ParCalculation.cp_atm*(T_can-T_heat) +   # infiltration load per unit building footprint area [W m^-2]
             volVent*dens*ParCalculation.cp_atm*(T_can-T_heat) +    # ventilation load per unit building footprint area [W m^-2]
@@ -413,7 +413,7 @@ class Building(object):
         # Implicit terms in eq. 2 which directly contain coefficient for newest Tin to be solved (Bueno et al., 2012)
         H2 = (wallArea*zac_in_wall +
             massArea*zac_in_mass +
-            zac_in_ceil +
+            ceilingArea*zac_in_ceil +
             winArea*self.uValue +
             volInfil * dens * ParCalculation.cp_atm +
             volVent * dens * ParCalculation.cp_atm)
