@@ -214,7 +214,7 @@ class Building(object):
         T_ceil = FractionsRoof.fimp*BEM.roofImp.Tint+FractionsRoof.fveg*BEM.roofVeg.Tint
         T_mass = BEM.mass.Text              # Outer layer [K]
         T_indoor = self.indoorTemp          # Indoor temp (initial) [K]
-        T_can = canTemp                     # Canyon temperature [K]
+        self.T_can = canTemp                # Canyon temperature [K]
 
         # Normalize areas to building foot print [m^2/m^2(bld)]
         # Facade (exterior) area per unit building footprint area [m^2 m^-2]
@@ -254,20 +254,6 @@ class Building(object):
         # Option 1 (zac_in_ceil): assume the same convective heat transfer coefficient regardless of temperature difference
         zac_in_ceil = 0.948
 
-        # Option 2 (zac_in_ceil): make convective heat transfer coefficient dependent on ceiling-indoor temperature difference
-        '''
-        # If ceiling temperature is greater than indoor temperature use a different convective heat transfer coefficient
-        if T_ceil > T_indoor:
-            zac_in_ceil  = 0.948
-        # If ceiling temperature is less than indoor temperature use a different convective heat transfer coefficient
-        elif (T_ceil < T_indoor) or self.is_near_zero(T_ceil-T_indoor):
-            zac_in_ceil  = 4.040
-        else:
-            print T_ceil, T_indoor
-            raise Exception(self.TEMPERATURE_COEFFICIENT_CONFLICT_MSG)
-            return
-        '''
-
         # -------------------------------------------------------------
         # Heat fluxes [W m^-2]
         # -------------------------------------------------------------
@@ -293,32 +279,26 @@ class Building(object):
         # Latent heat load per unit building footprint area [W m^-2]
         QLintload = self.intHeat * self.intHeatFLat
 
-        # Note: at the moment the infiltration and system air temperatures are considered to be the same
-        # This is a serious limitation.
-        # Future versions of UWG must calculate the system temperature based on HVAC system parameters
-        # wall load per unit building footprint area [W m^-2]
-        self.QWall = wallArea * zac_in_wall * (T_wall - T_cool)
-        # other surfaces load per unit building footprint area [W m^-2]
-        self.QMass = massArea * zac_in_mass * (T_mass - T_cool)
-        # window load due to temperature difference per unit building footprint area [W m^-2]
-        self.QWindow = winArea * self.uValue * (T_can - T_cool)
-        # ceiling load per unit building footprint area [W m^-2]
-        self.QCeil = ceilingArea * zac_in_ceil * (T_ceil - T_cool)
-        # infiltration load per unit building footprint area [W m^-2]
-        self.QInfil = volInfil * dens * ParCalculation.cp_atm * (T_can - T_cool)
-        # ventilation load per unit building footprint area [W m^-2]
-        self.QVen = volVent * dens * ParCalculation.cp_atm * (T_can - T_cool)
         # Heat/Cooling load per unit building footprint area [W m^-2], if any
-        self.sensCoolDemand = max(self.QWall+self.QMass+self.QWindow+self.QCeil+self.intHeat+self.QInfil+self.QVen+self.QWindowSolar,0.)
+        self.sensCoolDemand = max(
+            wallArea*zac_in_wall*(T_wall-T_cool) +                # wall load per unit building footprint area [W m^-2]
+            massArea*zac_in_mass*(T_mass-T_cool) +                # other surfaces load per unit building footprint area [W m^-2]
+            winArea*self.uValue*(self.T_can-T_cool) +             # window load due to temperature difference per unit building footprint area [W m^-2]
+            ceilingArea*zac_in_ceil*(T_ceil-T_cool) +             # ceiling load per unit building footprint area [W m^-2]
+            self.intHeat +
+            volInfil*dens*ParCalculation.cp_atm*(self.T_can-T_cool) +  # infiltration load per unit building footprint area [W m^-2]
+            volVent*dens*ParCalculation.cp_atm*(self.T_can-T_cool) +   # ventilation load per unit building footprint area [W m^-2]
+            self.QWindowSolar,                                    # solar load through window per unit building footprint area [W m^-2]
+            0.)
 
         self.sensHeatDemand = max(
             -(wallArea*zac_in_wall*(T_wall-T_heat) +               # wall load per unit building footprint area [W m^-2]
             massArea*zac_in_mass*(T_mass-T_heat) +                 # other surfaces load per unit building footprint area [W m^-2]
-            winArea*self.uValue*(T_can-T_heat) +                   # window load due to temperature difference per unit building footprint area [W m^-2]
+            winArea*self.uValue*(self.T_can-T_heat) +              # window load due to temperature difference per unit building footprint area [W m^-2]
             ceilingArea*zac_in_ceil*(T_ceil-T_heat) +              # ceiling load per unit building footprint area [W m^-2]
             self.intHeat +                                         # internal load per unit building footprint area [W m^-2]
-            volInfil*dens*ParCalculation.cp_atm*(T_can-T_heat) +   # infiltration load per unit building footprint area [W m^-2]
-            volVent*dens*ParCalculation.cp_atm*(T_can-T_heat) +    # ventilation load per unit building footprint area [W m^-2]
+            volInfil*dens*ParCalculation.cp_atm*(self.T_can-T_heat) +   # infiltration load per unit building footprint area [W m^-2]
+            volVent*dens*ParCalculation.cp_atm*(self.T_can-T_heat) +    # ventilation load per unit building footprint area [W m^-2]
             self.QWindowSolar),                                    # solar load through window per unit building footprint area [W m^-2]
             0.)
 
@@ -406,10 +386,10 @@ class Building(object):
 
         H1 = (T_wall*wallArea*zac_in_wall +
             T_mass*massArea*zac_in_mass +
-            T_ceil*zac_in_ceil +
-            T_can*winArea*self.uValue +
-            T_can*volInfil * dens * ParCalculation.cp_atm +
-            T_can*volVent * dens * ParCalculation.cp_atm)
+            T_ceil*ceilingArea*zac_in_ceil +
+            self.T_can*winArea*self.uValue +
+            self.T_can*volInfil * dens * ParCalculation.cp_atm +
+            self.T_can*volVent * dens * ParCalculation.cp_atm)
         # Implicit terms in eq. 2 which directly contain coefficient for newest Tin to be solved (Bueno et al., 2012)
         H2 = (wallArea*zac_in_wall +
             massArea*zac_in_mass +
@@ -446,10 +426,10 @@ class Building(object):
 
         # Calculate heat fluxes per unit floor area [W m^-2] (These are for record keeping only)
         self.fluxSolar = self.QWindowSolar/self.nFloor
-        self.fluxWindow = winArea * self.uValue *(T_can - T_indoor)/self.nFloor
+        self.fluxWindow = winArea * self.uValue *(self.T_can - T_indoor)/self.nFloor
         self.fluxInterior = self.intHeat * self.intHeatFRad *(1.-self.intHeatFLat)/self.nFloor
-        self.fluxInfil= volInfil * dens * ParCalculation.cp_atm *(T_can - T_indoor)/self.nFloor
-        self.fluxVent = volVent * dens * ParCalculation.cp_atm *(T_can - T_indoor)/self.nFloor
+        self.fluxInfil= volInfil * dens * ParCalculation.cp_atm *(self.T_can - T_indoor)/self.nFloor
+        self.fluxVent = volVent * dens * ParCalculation.cp_atm *(self.T_can - T_indoor)/self.nFloor
 
         # Total Electricity consumption per unit floor area [W m^-2] which is equal to
         # cooling consumption + electricity consumption + lighting
