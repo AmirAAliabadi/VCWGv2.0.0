@@ -742,13 +742,6 @@ def Write_BEM(BEMData,time,case,Output_dir):
     QGas = numpy.zeros(len(BEMData))
     sensWaste = numpy.zeros(len(BEMData))
     GasTotal = numpy.zeros(len(BEMData))
-    QWall = numpy.zeros(len(BEMData))
-    QMass = numpy.zeros(len(BEMData))
-    QWindow = numpy.zeros(len(BEMData))
-    QCeil = numpy.zeros(len(BEMData))
-    QInfil = numpy.zeros(len(BEMData))
-    QVen = numpy.zeros(len(BEMData))
-    QWindowSolar = numpy.zeros(len(BEMData))
     elecDomesticDemand = numpy.zeros((len(BEMData)))
     sensWaterHeatDemand = numpy.zeros((len(BEMData)))
     for i in range(0,len(BEMData)):
@@ -778,13 +771,6 @@ def Write_BEM(BEMData,time,case,Output_dir):
             QGas[i] = QGas[i] + BEM[j].frac*BEM[j].building.QGas
             sensWaste[i] = sensWaste[i] + BEM[j].frac*BEM[j].building.sensWaste
             GasTotal[i] = GasTotal[i] + BEM[j].frac*BEM[j].building.GasTotal
-            QWall[i] = QWall[i] + BEM[j].frac*BEM[j].building.QWall
-            QMass[i] = QMass[i] + BEM[j].frac*BEM[j].building.QMass
-            QWindow[i] = QWindow[i] + BEM[j].frac*BEM[j].building.QWindow
-            QCeil[i] = QCeil[i] + BEM[j].frac*BEM[j].building.QCeil
-            QInfil[i] = QInfil[i] + BEM[j].frac*BEM[j].building.QInfil
-            QVen[i] = QVen[i] + BEM[j].frac*BEM[j].building.QVen
-            QWindowSolar[i] = QWindowSolar[i] + BEM[j].frac*BEM[j].building.QWindowSolar
             elecDomesticDemand[i] = elecDomesticDemand[i] + BEM[j].frac*BEM[j].building.elecDomesticDemand
             sensWaterHeatDemand[i] = sensWaterHeatDemand[i] + BEM[j].frac*BEM[j].building.sensWaterHeatDemand
 
