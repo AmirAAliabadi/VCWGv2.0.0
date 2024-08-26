@@ -295,7 +295,7 @@ h_floor,3,             # Floor height [m]
 # 6B(Helena)                    14
 # 7(Duluth)                     15
 # 8(Fairbanks)                  16
-# 4C (Basel)                    17
+# Custom                        17
 
 zone,10,
 
