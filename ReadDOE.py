@@ -23,7 +23,7 @@ Last update: 2012
 DIR_CURR = os.path.abspath(os.path.dirname(__file__))
 DIR_DOE_PATH = os.path.join(DIR_CURR,"resources","DOERefBuildings")
 
-# Define standards: 16 building types, 3 built eras, 16 climate zones
+# Define standards: 16 building types, 3 built eras, 17 climate zones
 
 # DOE Building Types
 BLDTYPE = [
@@ -67,7 +67,7 @@ ZONETYPE = [
     '6B (Helena)',              # 14
     '7 (Duluth)',               # 15
     '8 (Fairbanks)',            # 16
-    '4C (Basel)'                # 17
+    'Custom'                    # 17
     ]
 
 def readDOE(serialize_output=True):
@@ -81,12 +81,12 @@ def readDOE(serialize_output=True):
     Note BLD8 & 10 = school
 
 
-    Then make matrix of ref data as nested nested lists [16, 3, 16]:
+    Then make matrix of ref data as nested nested lists [16, 3, 17]:
     matrix refDOE = Building objs
     matrix Schedule = SchDef objs
-    matrix refBEM (16,3,16) = BEMDef
+    matrix refBEM (16,3,17) = BEMDef
     where:
-        [16,3,16] is Type = 1-16, Era = 1-3, climate zone = 1-16
+        [16,3,17] is Type = 1-16, Era = 1-3, climate zone = 1-17
         i.e.
         Type: FullServiceRestaurant, Era: Pre80, Zone: 6A Minneapolis
     Nested tree:
@@ -94,26 +94,26 @@ def readDOE(serialize_output=True):
         ERA_1:
             CLIMATE_ZONE_1
             ...
-            CLIMATE_ZONE_16
+            CLIMATE_ZONE_17
         ERA_2:
             CLIMATE_ZONE_1
             ...
-            CLIMATE_ZONE_16
+            CLIMATE_ZONE_17
         ...
         ERA_3:
             CLIMATE_ZONE_1
             ...
-            CLIMATE_ZONE_16]
+            CLIMATE_ZONE_17]
 
     """
 
     #Nested, nested lists of Building, SchDef, BEMDef objects
-    refDOE = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))     #refDOE(16,3,16) = Building;
-    Schedule = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))   #Schedule (16,3,16) = SchDef;
-    refBEM = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))     #refBEM (16,3,16) = BEMDef;
+    refDOE = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))     #refDOE(17,3,16) = Building;
+    Schedule = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))   #Schedule (17,3,16) = SchDef;
+    refBEM = list(map(lambda j_: list(map (lambda k_: [None]*17,[None]*3)), [None]*16))     #refBEM (17,3,16) = BEMDef;
 
     #Purpose: Loop through every DOE reference csv and extract building data
-    #Nested loop = 16 types, 3 era, 16 zones = time complexity O(n*m*k) = 768
+    #Nested loop = 16 types, 3 era, 17 zones 
 
     for i in range(16):
 
@@ -183,7 +183,7 @@ def readDOE(serialize_output=True):
 
             for k in range(17):
 
-                # k = 16 climate zones
+                # k = 17 climate zones
                 #print "\tClimate zone: {} @k={}".format(ZONETYPE[k], k)
 
                 B = Building(
@@ -237,7 +237,7 @@ def readDOE(serialize_output=True):
                     Brick = Material(0.52, 900 * 899, "Brick")
                     Rbase = 0.271087 # R val based on stucco, concrete, gypsum
                     Rins = RvalWall[j][k] - Rbase #find insulation value
-                    D_ins = Rins * Insulation.thermalCond # depth of ins from [m^2 K W^-1] * [W m^-1 K^-1] = m
+                    D_ins = Rins * Insulation.thermalCond # depth of insulation [m^2 K W^-1] * [W m^-1 K^-1] = m
                     if D_ins > 0.01:
                         thickness = [0.0254,0.0508,0.0508,0.0508,0.0508,D_ins,0.0127]
                         layers = [Brick,Concrete,Concrete,Concrete,Concrete,Insulation,Gypsum]
