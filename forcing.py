@@ -36,7 +36,9 @@ class Forcing (object):
             self.dir = weather.staDir
             self.dif = weather.staDif
             self.prec = [p for p in weather.staRobs]
+            # Maximum wind speed permitted is 5 [m s-1]; overwrite values higher than 5 with 5
             self.wind = weather.staUmod
+            self.wind = [min(x, 5) for x in self.wind]
             self.Year = weather.staYear
             self.Month = weather.staMonth
             self.Day = weather.staDay
