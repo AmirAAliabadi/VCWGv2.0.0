@@ -1,5 +1,5 @@
 3,UWG,Location Summary,,,,,,,,,,,,,,,,,,
-Building,City,,,Miami,Houston,Phoenix,Atlanta,Los Angeles,Las Vegas,San Francisco,Baltimore,Albuquerque,Seattle,Chicago,Boulder,Minneapolis,Helena,Duluth,Fairbanks,Basel
+Building,City,,,Miami,Houston,Phoenix,Atlanta,Los Angeles,Las Vegas,San Francisco,Baltimore,Albuquerque,Seattle,Chicago,Boulder,Minneapolis,Helena,Duluth,Fairbanks,Custom
 BLD8PRE,Zone,,ASHRAE 90.1-2004 Climate Zone,1A,2A,2B,3A,3B-CA,3B,3C,4A,4B,4C,5A,5B,6A,6B,7,8,4C
 BLD8PRE,TypeWall,,Construction Type,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame,SteelFrame
 BLD8PRE,RvalWall,,R-value (m2·K / W),0.765696784,0.765696784,0.765696784,0.782472613,0.765696784,0.765696784,0.786163522,0.989119683,0.956937799,1.006036217,1.128668172,1.094091904,1.215066829,1.215066829,1.295336788,1.408450704,1.006036217
