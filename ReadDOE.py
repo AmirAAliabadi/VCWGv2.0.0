@@ -357,15 +357,15 @@ def readDOE(serialize_output=True):
                     mass = Tsurf_Def(thickness, [concrete, concrete],300.,"MassFloor")
 
 
-                elif TypeWall[j][k] == "BaselWall":
+                elif TypeWall[j][k] == "CustomWall":
 
                     mat1 = Material(0.6918,1555146,'Mat1')
                     mat2 = Material(1.311,1874432,'Mat2')
                     mat3 = Material(0.16,651467,'Mat3')
                     materials = [mat1,mat2,mat2,mat2,mat2,mat3]
                     thickness = [0.0254,0.0508,0.0508,0.0508,0.0508,0.0127]
-                    wallSun = Tsurf_Def(thickness, materials,300,"BaselWall")
-                    wallShade = Tsurf_Def(thickness, materials,300,"BaselWall")
+                    wallSun = Tsurf_Def(thickness, materials,300,"CustomWall")
+                    wallShade = Tsurf_Def(thickness, materials,300,"CustomWall")
 
                     Concrete = Material(1.311, 836.8 * 2240, "Concrete")
                     thickness = [0.05, 0.05]
@@ -426,12 +426,12 @@ def readDOE(serialize_output=True):
                     roofVeg = Tsurf_Def([D_ins, D_ins], [Soil, Soil], 300., "IEAD")
 
 
-                elif TypeRoof[j][k] == "BaselRoof":
+                elif TypeRoof[j][k] == "CustomRoof":
 
                     mat = Material(0.94,1400000,'RoofMat1')
                     thickness = [0.05819,0.05819]
-                    # roof = Element(thickness, [mat, mat], 0., 293., 0., "BaselRoof")
-                    roofImp = Tsurf_Def(thickness, [mat, mat],300.,"BaselRoof")
+                    # roof = Element(thickness, [mat, mat], 0., 293., 0., "CustomRoof")
+                    roofImp = Tsurf_Def(thickness, [mat, mat],300.,"CustomRoof")
 
                     Soil = Material(6.84, 2.2137 * 10 ** 6, 'RoofVegMat')
                     roofVeg = Tsurf_Def(thickness, [Soil, Soil], 300., "IEAD")
