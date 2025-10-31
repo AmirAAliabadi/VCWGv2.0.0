@@ -1,5 +1,5 @@
 3,,Location Summary,,,,,,,,,,,,,,,,,,
-BLD,UWG,,,Miami,Houston,Phoenix,Atlanta,Los Angeles,Las Vegas,San Francisco,Baltimore,Albuquerque,Seattle,Chicago,Boulder,Minneapolis,Helena,Duluth,Fairbanks,Basel
+BLD,UWG,,,Miami,Houston,Phoenix,Atlanta,Los Angeles,Las Vegas,San Francisco,Baltimore,Albuquerque,Seattle,Chicago,Boulder,Minneapolis,Helena,Duluth,Fairbanks,Custom
 BLD16PRE,Zone,,ASHRAE 90.1-2004 Climate Zone,1A,2A,2B,3A,3B-CA,3B,3C,4A,4B,4C,5A,5B,6A,6B,7,8,4C
 BLD16PRE,TypeWall,,Construction Type,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall,Metal building wall
 BLD16PRE,RvalWall,,R-value (m2·K / W),0.574052813,0.574052813,0.574052813,0.591366056,0.574052813,0.574052813,0.594530321,0.798084597,0.765696784,0.814995925,0.937207123,0.902527076,1.023541453,1.023541453,1.103752759,1.218026797,0.814995925
